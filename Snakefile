@@ -4,12 +4,14 @@ genome_urls = {
     'GCF_000021665.1': 'https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/021/665/GCF_000021665.1_ASM2166v1/GCF_000021665.1_ASM2166v1_genomic.fna.gz',
     'GCF_000017325.1': 'https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/017/325/GCF_000017325.1_ASM1732v1/GCF_000017325.1_ASM1732v1_genomic.fna.gz',
     'GCF_000020225.1': 'https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/020/225/GCF_000020225.1_ASM2022v1/GCF_000020225.1_ASM2022v1_genomic.fna.gz',
+    'GCF_026072915.1': 'https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/026/072/915/GCF_026072915.1_ASM2607291v1/GCF_026072915.1_ASM2607291v1_genomic.fna.gz',
+    'GCF_000436395.1': 'https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/436/395/GCF_000436395.1_MGS154/GCF_000436395.1_MGS154_genomic.fna.gz',
     }
 
 rule all:
     input:
-        "compare.mat.matrix.png",
-        "compare.rstats.png",
+        "compare.mat.matrix.pdf",
+        "compare.rstats.pdf",
         "show-compare.html",
 
 
@@ -53,17 +55,17 @@ rule plot_comparison:
     input:
         matrix = "compare.mat"
     output:
-        "compare.mat.matrix.png"
+        "compare.mat.matrix.pdf"
     conda: "envs/sourmash.yml"
     shell: """
-        sourmash plot {input} --labels
+        sourmash plot {input} --labels --pdf
     """
 
 rule plot_comparison_rstats:
     input:
         matrix = "compare.mat.csv",
     output:
-        "compare.rstats.png"
+        "compare.rstats.pdf"
     conda: "envs/r.yml"
     shell: """
         Rscript plot-compare.R {input} {output}
